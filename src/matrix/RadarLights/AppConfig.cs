@@ -1,15 +1,17 @@
 ﻿using System.Reflection;
+using RpiLedMatrix;
 
 namespace RadarLights;
 
 public record AppConfig
 {
     public string PiAwareServer { get; init; } = "http://raspberrypi:8080";
-    public int RowLength { get; init; } = 128;
-    public int ColumnLength { get; init; } = 128;
+    public int RowLength { get; init; }
+    public int ColumnLength { get; init; }
     public double HomeLatitude { get; init; }
     public double HomeLongitude { get; init; }
     public string RadarSpinnerColour { get; init; } = "0, 150, 0";
+    public RGBLedMatrixOptions Matrix { get; init; }
     public MqttConfig Mqtt { get; } = new MqttConfig();
 
     public void Log()

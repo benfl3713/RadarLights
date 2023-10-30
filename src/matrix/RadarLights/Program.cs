@@ -38,15 +38,7 @@ try
     builder.Services.AddSingleton<AirplaneDataCache>();
     builder.Services.AddSingleton<AirplaneColourService>();
     builder.Services.AddSingleton<OverheadAlertService>();
-    builder.Services.AddSingleton(new LedMatrix(new RGBLedMatrix(new RGBLedMatrixOptions
-    {
-        Rows = 64,
-        Cols = 64,
-        HardwareMapping = "adafruit-hat-pwm",
-        GpioSlowdown = 4,
-        ChainLength = 4,
-        PixelMapperConfig = "Rotate:180;U-mapper"
-    })));
+    builder.Services.AddSingleton(new LedMatrix(new RGBLedMatrix(appConfig.Matrix)));
 
     builder.Services.AddSingleton<PlaneRenderService>();
     builder.Services.AddHostedService<PlaneRenderService>(p => p.GetRequiredService<PlaneRenderService>());
