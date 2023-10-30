@@ -1,0 +1,9 @@
+﻿*.DotSettings.user
+.idea/
+.DS_Store
+**/bin/
+**/obj/
+Makefile
+**/Makefile
+**/*.log
+.env
