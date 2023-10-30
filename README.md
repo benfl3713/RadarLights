@@ -5,6 +5,8 @@ using the [PiAware program](https://www.flightaware.com/adsb/piaware/) as a data
 
 This project is still in it's infancy so be aware there may be bugs and missing features.
 
+<img src="docs/demo.gif" width="350"/>
+
 ## Hardware
 
 1. Raspberry Pi 4 or greater (Controlling led matrix displays is very CPU intensive so you will want a dedicated Pi for this)
