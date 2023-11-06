@@ -11,12 +11,14 @@ namespace RadarLights.Services;
 public class HomeAssistantService : BackgroundService
 {
     private readonly AppConfig.MqttConfig _mqttConfig;
+    private readonly ILogger<HomeAssistantService> _logger;
     private readonly MqttPublisher _publisher;
     private RadarSettings _radarSettings;
 
-    public HomeAssistantService(AppConfig config, MqttPublisher publisher)
+    public HomeAssistantService(ILogger<HomeAssistantService> logger, AppConfig config, MqttPublisher publisher)
     {
         _mqttConfig = config.Mqtt;
+        _logger = logger;
         _publisher = publisher;
         _radarSettings = RadarSettings.Load();
         RadarSettings.SettingsUpdated += async (sender, _) =>
@@ -31,6 +33,20 @@ public class HomeAssistantService : BackgroundService
         await SetupDeviceConfig();
         await SetupListeners();
         await SendDeviceState();
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
+            try
+            {
+                await SetupDeviceConfig();
+                await SendDeviceState();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed to update home assistant");
+            }
+        }
     }
 
     private async Task SendDeviceState()
