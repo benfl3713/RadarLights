@@ -6,7 +6,7 @@ public class PlaneRenderService : BackgroundService
 {
     private readonly ILogger<PlaneRenderService> _logger;
     private readonly AppConfig _config;
-    private readonly LedMatrix _matrix;
+    private readonly ILedMatrix _matrix;
     private readonly AirplaneDataCache _airplaneDataCache;
     private readonly AirplaneColourService _airplaneColourService;
     private RadarSettings _radarSettings;
@@ -15,7 +15,7 @@ public class PlaneRenderService : BackgroundService
     private readonly RGBLedFont _font = new RGBLedFont("./Fonts/4x6.bdf");
     private Color _radarSpinnerColour;
 
-    public PlaneRenderService(ILogger<PlaneRenderService> logger, AppConfig config, LedMatrix matrix, AirplaneDataCache airplaneDataCache, AirplaneColourService airplaneColourService)
+    public PlaneRenderService(ILogger<PlaneRenderService> logger, AppConfig config,  ILedMatrix matrix, AirplaneDataCache airplaneDataCache, AirplaneColourService airplaneColourService)
     {
         _logger = logger;
         _config = config;
@@ -163,6 +163,7 @@ public class PlaneRenderService : BackgroundService
         await base.StopAsync(cancellationToken);
         _matrix.Clear();
         _matrix.Update();
+        _matrix.Reset();
     }
 
     private void DrawPlaneDot(MatrixAircraft aircraft)

@@ -6,11 +6,11 @@ public class OverheadAlertService
 {
     private readonly ILogger<OverheadAlertService> _logger;
     private readonly PlaneRenderService _planeRenderService;
-    private readonly LedMatrix _matrix;
+    private readonly ILedMatrix _matrix;
     private readonly List<AirplaneDataService.AircraftResponse.Aircraft> _nearbyAircraft = new List<AirplaneDataService.AircraftResponse.Aircraft>();
     private RadarSettings _radarSettings;
     
-    public OverheadAlertService(ILogger<OverheadAlertService> logger, PlaneRenderService planeRenderService, LedMatrix matrix)
+    public OverheadAlertService(ILogger<OverheadAlertService> logger, PlaneRenderService planeRenderService, ILedMatrix matrix)
     {
         _logger = logger;
         _planeRenderService = planeRenderService;

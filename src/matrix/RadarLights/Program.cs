@@ -38,7 +38,8 @@ try
     builder.Services.AddSingleton<AirplaneDataCache>();
     builder.Services.AddSingleton<AirplaneColourService>();
     builder.Services.AddSingleton<OverheadAlertService>();
-    builder.Services.AddSingleton(new LedMatrix(new RGBLedMatrix(appConfig.Matrix)));
+    builder.Services.AddSingleton<RgbMatrixFactory>();
+    builder.Services.AddSingleton<ILedMatrix, LedMatrix>();
 
     builder.Services.AddSingleton<PlaneRenderService>();
     builder.Services.AddHostedService<PlaneRenderService>(p => p.GetRequiredService<PlaneRenderService>());
