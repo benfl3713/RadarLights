@@ -4,7 +4,6 @@ using Microsoft.Extensions.Http;
 using RadarLights;
 using RadarLights.Services;
 using RadarLights.Services.HomeAssistant;
-using RpiLedMatrix;
 using Serilog;
 using Serilog.Events;
 
@@ -53,7 +52,8 @@ try
     
     builder.Services.AddCors();
 
-    var app = builder.Build();
+    WebApplication app = builder.Build();
+    Task splashScreen = app.ShowSplashScreen();
 
     app.UseCors(corsPolicyBuilder => corsPolicyBuilder
         .AllowAnyOrigin()
@@ -68,35 +68,10 @@ try
 
     app.MapPost("/config", ([FromBody] RadarSettings settings) => settings.Save());
 
-    var renderer = app.Services.GetRequiredService<PlaneRenderService>();
-    if (RadarSettings.Load().Enabled == false)
-    {
-        Task.Run(async () =>
-        {
-            await Task.Delay(2000);
-            Console.WriteLine("Radar Disabled. Stopping renderer");
-            await renderer.StopAsync(CancellationToken.None);
-        });
-    }
-    
-    RadarSettings.SettingsUpdated += async (sender, _) =>
-    {
-        var settings = (RadarSettings) sender!;
-        if (settings.Enabled == RadarSettings.Load().Enabled)
-            return;
-        if (settings.Enabled == false)
-        {
-            Console.WriteLine("Stopping renderer");
-            await renderer.StopAsync(CancellationToken.None);
-        }
-        else
-        {
-            Console.WriteLine("Starting renderer");
-            await renderer.StartAsync(CancellationToken.None);
-        }
-    };
+    app.SetupRadarSettingsListener();
 
-    app.Run();
+    await splashScreen;
+    await app.RunAsync();
 }
 catch (Exception ex)
 {

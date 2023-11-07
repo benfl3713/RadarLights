@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Geo;
 using Geolocation;
-using RpiLedMatrix;
+using Color = RpiLedMatrix.Color;
 using Coordinate = Geolocation.Coordinate;
 
 namespace RadarLights.Services;

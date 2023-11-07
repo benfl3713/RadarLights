@@ -13,6 +13,9 @@
       <None Update="Fonts\8x13.bdf">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Assets\logo.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -26,6 +29,7 @@
       <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
       <PackageReference Include="MQTTnet" Version="4.3.1.873" />
       <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="3.0.2" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using RpiLedMatrix;
+﻿using Color = RpiLedMatrix.Color;
 
 namespace RadarLights;
 
