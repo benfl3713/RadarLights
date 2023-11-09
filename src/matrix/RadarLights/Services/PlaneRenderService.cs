@@ -25,11 +25,21 @@ public class PlaneRenderService : BackgroundService
         _airplaneColourService = airplaneColourService;
         _radarSettings = RadarSettings.Load();
         _radarSpinnerColour = Color.FromString(_config.RadarSpinnerColour);
-        RadarSettings.SettingsUpdated += (sender, _) =>
+
+        RadarSettings.SettingsUpdated += OnRadarSettingsUpdate;
+    }
+
+    private void OnRadarSettingsUpdate(object? sender, EventArgs _)
+    {
+        RadarSettings newConfig = (RadarSettings)sender!;
+        if (newConfig.Enabled != _radarSettings.Enabled
+            || newConfig.Range != _radarSettings.Range
+            || newConfig.Trails != _radarSettings.Trails)
         {
-            _radarSettings = (RadarSettings)sender!;
             _relevantHistory = new Dictionary<string, List<MatrixAircraft>>();
-        };
+        }
+
+        _radarSettings = newConfig;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

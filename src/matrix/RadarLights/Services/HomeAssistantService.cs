@@ -82,7 +82,7 @@ public class HomeAssistantService : BackgroundService
     private async Task SetupListeners()
     {
         var client = await MqttPublisher.GetMqttClient(_mqttConfig.Server);
-        client.ApplicationMessageReceivedAsync += async args =>
+        client.ApplicationMessageReceivedAsync += args =>
         {
             Console.WriteLine(args.ApplicationMessage.ConvertPayloadToString());
             if (args.ApplicationMessage.Topic == $"{_mqttConfig.TopicPrefix}/switch/{_mqttConfig.UniqueId}/enabled/set")
@@ -90,6 +90,8 @@ public class HomeAssistantService : BackgroundService
                 _radarSettings.Enabled = args.ApplicationMessage.ConvertPayloadToString() == "ON";
                 _radarSettings.Save();
             }
+
+            return Task.CompletedTask;
         };
 
         await client.SubscribeAsync(new MqttClientSubscribeOptions

@@ -4,7 +4,7 @@ public class HAEntityConfig
 {
     public string? DeviceClass { get; set; }
     public HADeviceConfig? Device { get; set; }
-    public string Name { get; set; }
+    public required string Name { get; set; }
     public string? Icon { get; set; }
     public string? StateTopic { get; set; }
     public string? StateClass { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Concurrent;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Geo;
 using Geolocation;
@@ -178,7 +179,7 @@ public class AirplaneDataService : BackgroundService
         }
         else
         {
-            _cache.Data.History.Add(ma.Flight, new List<MatrixAircraft> { ma });
+            _cache.Data.History.AddOrUpdate(ma.Flight, new List<MatrixAircraft> {ma}, (_, list) => list);
         }
     }
 
@@ -216,7 +217,7 @@ public class AirplaneDataService : BackgroundService
 
         Dictionary<string, List<MatrixAircraft>> history = matrixHistoryAircraft.GroupBy(p => p.Flight)
             .ToDictionary(a => a.Key!, a => a.Distinct(new MatrixAircraftCoordinateComparer()).ToList());
-        _cache.Data.History = history;
+        _cache.Data.History = new ConcurrentDictionary<string, List<MatrixAircraft>>(history);
     }
 
     public MatrixAircraft GetMatrixAircraft(AircraftResponse.Aircraft aircraft)

@@ -11,7 +11,7 @@ public record AppConfig
     public double HomeLatitude { get; init; }
     public double HomeLongitude { get; init; }
     public string RadarSpinnerColour { get; init; } = "0, 150, 0";
-    public RGBLedMatrixOptions Matrix { get; init; }
+    public required RGBLedMatrixOptions Matrix { get; init; }
     public MqttConfig Mqtt { get; } = new MqttConfig();
 
     public void Log()
@@ -26,7 +26,7 @@ public record AppConfig
     public record MqttConfig
     {
         public bool Enabled { get; init; } = false;
-        public string Server { get; init; }
+        public string Server { get; init; } = string.Empty;
         public string TopicPrefix { get; init; } = "homeassistant";
         public string DeviceName { get; init; } = "Plane Radar";
         public string UniqueId { get; init; } = "led_plane_radar";

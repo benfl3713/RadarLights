@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using RadarLights;
 using RadarLights.Services;
+using RpiLedMatrix;
 
 namespace RadarLightsTests;
 
@@ -12,7 +13,7 @@ public class AirplaneDataServiceTests
     [Test]
     public async Task Test()
     {
-        AirplaneDataService service = new AirplaneDataService(new Logger<AirplaneDataService>(new LoggerFactory()), new HttpClient(), new AppConfig(), new AirplaneDataCache(), new Mock<OverheadAlertService>().Object);
+        AirplaneDataService service = new AirplaneDataService(new Logger<AirplaneDataService>(new LoggerFactory()), new HttpClient(), new AppConfig{Matrix = new RGBLedMatrixOptions()}, new AirplaneDataCache(), new Mock<OverheadAlertService>().Object);
         await service.UpdateAirplaneData();
     }
     //
