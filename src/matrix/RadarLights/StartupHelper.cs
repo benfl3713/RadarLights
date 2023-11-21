@@ -34,15 +34,6 @@ public static class StartupHelper
     public static void SetupRadarSettingsListener(this WebApplication app)
     {
         var renderer = app.Services.GetRequiredService<PlaneRenderService>();
-        if (RadarSettings.Load().Enabled == false)
-        {
-            Task.Run(async () =>
-            {
-                await Task.Delay(2000);
-                Console.WriteLine("Radar Disabled. Stopping renderer");
-                await renderer.StopAsync(CancellationToken.None);
-            });
-        }
 
         RadarSettings.SettingsUpdated += async (sender, _) =>
         {

@@ -69,8 +69,9 @@ try
     app.MapPost("/config", ([FromBody] RadarSettings settings) => settings.Save());
 
     app.SetupRadarSettingsListener();
-
+    
     await splashScreen;
+    
     await app.RunAsync();
 }
 catch (Exception ex)

@@ -6,7 +6,6 @@ namespace RadarLights.Services;
 public class PlaneRenderService : BackgroundService
 {
     private readonly ILogger<PlaneRenderService> _logger;
-    private readonly AppConfig _config;
     private readonly ILedMatrix _matrix;
     private readonly AirplaneDataCache _airplaneDataCache;
     private readonly AirplaneColourService _airplaneColourService;
@@ -19,12 +18,11 @@ public class PlaneRenderService : BackgroundService
     public PlaneRenderService(ILogger<PlaneRenderService> logger, AppConfig config,  ILedMatrix matrix, AirplaneDataCache airplaneDataCache, AirplaneColourService airplaneColourService)
     {
         _logger = logger;
-        _config = config;
         _matrix = matrix;
         _airplaneDataCache = airplaneDataCache;
         _airplaneColourService = airplaneColourService;
         _radarSettings = RadarSettings.Load();
-        _radarSpinnerColour = Color.FromString(_config.RadarSpinnerColour);
+        _radarSpinnerColour = Color.FromString(config.RadarSpinnerColour);
 
         RadarSettings.SettingsUpdated += OnRadarSettingsUpdate;
     }
@@ -44,6 +42,12 @@ public class PlaneRenderService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        if (!_radarSettings.Enabled)
+        {
+            await StopAsync(stoppingToken);
+            return;
+        }
+
         while (!stoppingToken.IsCancellationRequested)
         {
             _relevantHistory = _airplaneDataCache.Data.History.Where(h => _airplaneDataCache.Data.Aircraft.Any(a => a.Flight == h.Key)).ToDictionary(d => d.Key, d => d.Value);
