@@ -44,13 +44,24 @@ public class AirplaneColourService
 
         var colour =  airline switch
         {
-            "EXS" or "SWR" => new Color(200, 0, 0),
-            "KLM" => new Color(0, 100, 100),
-            "EZY" => new Color(255, 25, 0),
-            "RYR" or "AFR" => new Color(0, 0, 255),
-            "EIN" => new Color(0, 200, 0),
-            "TOM" or "TUI" => new Color(0, 60, 120),
-            "UAE" => new Color(110, 130, 0),
+            "EXS" => new Color(200, 0, 0), // Jet2
+            "SWR" => new Color(150, 0, 0), // Swiss
+            "KLM" => new Color(0, 100, 100), // KLM
+            "EZY" or "EJU" or "EZS" => new Color(255, 25, 0), // easyJet
+            "RYR" or "RUK" => new Color(0, 0, 200), // Ryanair
+            "AFR" => new Color(0, 0, 255), // Air france
+            "EIN" or "EUK" => new Color(0, 200, 0), // Aer Lingus
+            "TOM" or "TUI" => new Color(0, 60, 120), // TUI
+            "UAE" => new Color(110, 130, 0), // Emirates
+            "ETD" => new Color(200, 200, 0), // Etihad
+            "BRU" or "BEL" => new Color(0, 20, 150), // Brussels
+            "TAR" => new Color(200, 10, 0), //Tunisair
+            "THY" => new Color(150, 0, 0), //Turkish
+            "BAW" or "SHT" => new Color(0, 50, 180),
+            "UAL" => new Color(0, 20, 180), // United
+            "ACA" => new Color(200, 10, 0), //Air Canada
+            "VIR" => new Color(230, 0, 0), //Virgin
+            "LOG" => new Color(30, 10, 230), //loganair
             _ => new Color(200, 200, 200)
         };
 
