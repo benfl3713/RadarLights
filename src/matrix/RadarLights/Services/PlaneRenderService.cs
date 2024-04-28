@@ -1,4 +1,5 @@
-﻿using RpiLedMatrix;
+﻿using RadarLights.Services.Renderers;
+using RpiLedMatrix;
 using Color = RpiLedMatrix.Color;
 
 namespace RadarLights.Services;
@@ -9,18 +10,20 @@ public class PlaneRenderService : BackgroundService
     private readonly ILedMatrix _matrix;
     private readonly AirplaneDataCache _airplaneDataCache;
     private readonly AirplaneColourService _airplaneColourService;
+    private readonly ClockRendererService _clockRendererService;
     private RadarSettings _radarSettings;
     private bool _paused;
     private Dictionary<string,List<MatrixAircraft>> _relevantHistory = new Dictionary<string, List<MatrixAircraft>>();
     private readonly RGBLedFont _font = new RGBLedFont("./Fonts/4x6.bdf");
-    private Color _radarSpinnerColour;
+    private readonly Color _radarSpinnerColour;
 
-    public PlaneRenderService(ILogger<PlaneRenderService> logger, AppConfig config,  ILedMatrix matrix, AirplaneDataCache airplaneDataCache, AirplaneColourService airplaneColourService)
+    public PlaneRenderService(ILogger<PlaneRenderService> logger, AppConfig config,  ILedMatrix matrix, AirplaneDataCache airplaneDataCache, AirplaneColourService airplaneColourService, ClockRendererService clockRendererService)
     {
         _logger = logger;
         _matrix = matrix;
         _airplaneDataCache = airplaneDataCache;
         _airplaneColourService = airplaneColourService;
+        _clockRendererService = clockRendererService;
         _radarSettings = RadarSettings.Load();
         _radarSpinnerColour = Color.FromString(config.RadarSpinnerColour);
 
@@ -95,6 +98,9 @@ public class PlaneRenderService : BackgroundService
         {
             DrawPlane(aircraft);
         }
+        
+        if (_radarSettings.ShowClock)
+            _clockRendererService.Render(_matrix);
 
         _matrix.Update();
 
@@ -233,6 +239,11 @@ public class PlaneRenderService : BackgroundService
 
         SafeSetPixel((int)Math.Round(lx), (int)Math.Round(ly), _airplaneColourService.GetColour(aircraft));
         SafeSetPixel((int)Math.Round(rx), (int)Math.Round(ry), _airplaneColourService.GetColour(aircraft));
+        
+        // if (aircraft.Flight?.Trim() == "ICE454")
+        // {
+        //     _matrix.DrawCircle(aircraft.X, aircraft.Y, 4, new Color(255, 255, 255));
+        // }
     }
     
     private int AddAngle(int angle, int add)

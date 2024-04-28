@@ -4,6 +4,7 @@ using Microsoft.Extensions.Http;
 using RadarLights;
 using RadarLights.Services;
 using RadarLights.Services.HomeAssistant;
+using RadarLights.Services.Renderers;
 using Serilog;
 using Serilog.Events;
 
@@ -40,6 +41,7 @@ try
     builder.Services.AddSingleton<RgbMatrixFactory>();
     builder.Services.AddSingleton<ILedMatrix, LedMatrix>();
 
+    builder.Services.AddSingleton<ClockRendererService>();
     builder.Services.AddSingleton<PlaneRenderService>();
     builder.Services.AddHostedService<PlaneRenderService>(p => p.GetRequiredService<PlaneRenderService>());
     builder.Services.AddHostedService<AirplaneDataService>();
@@ -53,7 +55,10 @@ try
     builder.Services.AddCors();
 
     WebApplication app = builder.Build();
-    Task splashScreen = app.ShowSplashScreen();
+    
+    Task splashScreen = Task.CompletedTask;
+    if (!args.Contains("--skip-splash"))
+        splashScreen = app.ShowSplashScreen();
 
     app.UseCors(corsPolicyBuilder => corsPolicyBuilder
         .AllowAnyOrigin()

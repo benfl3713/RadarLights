@@ -11,6 +11,7 @@ public class RadarSettings
     public bool Alerts { get; set; }
     public bool Trails { get; set; }
     public bool ShowAltitudeKey { get; set; } = true;
+    public bool ShowClock { get; set; }
 
     public static RadarSettings Load()
     {
