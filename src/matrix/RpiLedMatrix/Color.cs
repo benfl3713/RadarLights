@@ -55,6 +55,11 @@ public struct Color
     {
         return $"(R: {R}, G: {G}, B: {B})";
     }
+
+    public string ToShortString()
+    {
+        return $"{R},{G},{B}";
+    }
     
     public static Color operator /(Color a, int b)
     {
@@ -83,5 +88,15 @@ public struct Color
             throw new ArgumentException("Color string must be in the format 'R,G,B'");
         
         return new Color(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+    }
+    
+    public byte[] ToByteArray()
+    {
+        return new byte[] { R, G, B };
+    }
+    
+    public static implicit operator byte[](Color color)
+    {
+        return color.ToByteArray();
     }
 }

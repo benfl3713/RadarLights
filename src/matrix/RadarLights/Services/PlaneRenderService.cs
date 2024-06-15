@@ -1,4 +1,6 @@
-﻿using RadarLights.Services.Renderers;
+﻿using System.Text.Json;
+using BdfFontParser;
+using RadarLights.Services.Renderers;
 using RpiLedMatrix;
 using Color = RpiLedMatrix.Color;
 
@@ -14,7 +16,7 @@ public class PlaneRenderService : BackgroundService
     private RadarSettings _radarSettings;
     private bool _paused;
     private Dictionary<string,List<MatrixAircraft>> _relevantHistory = new Dictionary<string, List<MatrixAircraft>>();
-    private readonly RGBLedFont _font = new RGBLedFont("./Fonts/4x6.bdf");
+    private readonly BdfFont _font = new BdfFont("./Fonts/4x6.bdf");
     private readonly Color _radarSpinnerColour;
 
     public PlaneRenderService(ILogger<PlaneRenderService> logger, AppConfig config,  ILedMatrix matrix, AirplaneDataCache airplaneDataCache, AirplaneColourService airplaneColourService, ClockRendererService clockRendererService)

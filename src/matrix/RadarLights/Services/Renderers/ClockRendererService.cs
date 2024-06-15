@@ -1,3 +1,4 @@
+using BdfFontParser;
 using RpiLedMatrix;
 using Color = RpiLedMatrix.Color;
 
@@ -5,7 +6,7 @@ namespace RadarLights.Services.Renderers;
 
 public class ClockRendererService
 {
-    private readonly RGBLedFont _font = new RGBLedFont("./Fonts/5x8.bdf");
+    private readonly BdfFont _font = new BdfFont("./Fonts/5x8.bdf");
     
     public void Render(ILedMatrix matrix)
     {

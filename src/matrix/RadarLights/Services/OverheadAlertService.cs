@@ -1,3 +1,4 @@
+using BdfFontParser;
 using RpiLedMatrix;
 using Color = RpiLedMatrix.Color;
 
@@ -60,9 +61,9 @@ public class OverheadAlertService
         Thread.Sleep(200);
         _matrix.Clear();
         _matrix.DrawCircle(63, 63, 60, new Color(200, 0, 0));
-        _matrix.DrawText(new RGBLedFont("./Fonts/8x13.bdf"), 30, 63, new Color(200, 0, 0), aircraft.Flight ?? string.Empty);
-        _matrix.DrawText(new RGBLedFont("./Fonts/8x13.bdf"), 15, 63 + 15, new Color(200, 0, 0), "Overhead !!!");
-        _matrix.DrawText(new RGBLedFont("./Fonts/8x13.bdf"), 15, 63 + 30, new Color(200, 0, 0), $"at FL{aircraft.AltBaro / 100:000}");
+        _matrix.DrawText(new BdfFont("./Fonts/8x13.bdf"), 30, 63, new Color(200, 0, 0), aircraft.Flight ?? string.Empty);
+        _matrix.DrawText(new BdfFont("./Fonts/8x13.bdf"), 15, 63 + 15, new Color(200, 0, 0), "Overhead !!!");
+        _matrix.DrawText(new BdfFont("./Fonts/8x13.bdf"), 15, 63 + 30, new Color(200, 0, 0), $"at FL{aircraft.AltBaro / 100:000}");
         _matrix.Update();
         Thread.Sleep(10000);
         _planeRenderService.Unpause();

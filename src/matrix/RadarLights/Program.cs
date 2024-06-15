@@ -45,6 +45,9 @@ try
     builder.Services.AddSingleton<PlaneRenderService>();
     builder.Services.AddHostedService<PlaneRenderService>(p => p.GetRequiredService<PlaneRenderService>());
     builder.Services.AddHostedService<AirplaneDataService>();
+    
+    builder.Services.AddHostedService<SignalRMatrixSenderService>();
+    builder.Services.AddSignalR();
 
     if (appConfig.Mqtt.Enabled)
     {
@@ -72,6 +75,8 @@ try
     app.MapGet("/config", RadarSettings.Load);
 
     app.MapPost("/config", ([FromBody] RadarSettings settings) => settings.Save());
+
+    app.MapHub<MatrixHub>("/matrix");
 
     app.SetupRadarSettingsListener();
     
